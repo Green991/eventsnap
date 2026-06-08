@@ -1,0 +1,16 @@
+{
+    "rewrites": [
+        {
+            "source": "/e/:slug",
+            "destination": "/app.html"
+        },
+        {
+            "source": "/wall/:slug",
+            "destination": "/wall.html"
+        },
+        {
+            "source": "/((?!.*\\..*).*)",
+            "destination": "/index.html"
+        }
+    ]
+}

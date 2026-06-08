@@ -1,0 +1,123 @@
+/* Wedding / Default Theme extracted from _LEGACY/index.html */
+:root {
+    --bg1: #fff1f7;
+    --bg2: #f3f0ff;
+    --bg3: #e9fbff;
+    --card: #ffffffcc;
+    --ink: #0f172a;
+    --muted: #334155;
+    --shadow: 0 18px 55px rgba(2, 6, 23, .12);
+    --r: 24px;
+    --btn: #0f172a;
+    --btn2: #ffffff;
+    --accent1: #ff4d8d;
+    --accent2: #7c3aed;
+    --accent3: #06b6d4;
+}
+
+body.theme-wedding {
+    color: var(--ink);
+    background:
+        radial-gradient(1200px 700px at 10% 0%, var(--bg1), transparent 55%),
+        radial-gradient(1000px 700px at 90% 10%, var(--bg2), transparent 60%),
+        radial-gradient(900px 700px at 50% 100%, var(--bg3), transparent 55%),
+        linear-gradient(180deg, #ffffff, #f8fafc);
+    overflow-x: hidden;
+}
+
+.theme-wedding .bubbles::before,
+.theme-wedding .bubbles::after {
+    content: "";
+    position: fixed;
+    inset: -80px;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 10% 20%, rgba(255, 77, 141, .18) 0 10px, transparent 11px),
+        radial-gradient(circle at 30% 70%, rgba(124, 58, 237, .14) 0 12px, transparent 13px),
+        radial-gradient(circle at 78% 28%, rgba(6, 182, 212, .14) 0 14px, transparent 15px),
+        radial-gradient(circle at 86% 72%, rgba(255, 77, 141, .14) 0 9px, transparent 10px),
+        radial-gradient(circle at 52% 40%, rgba(124, 58, 237, .10) 0 18px, transparent 19px);
+    filter: blur(0.2px);
+    opacity: .95;
+    transform: translateZ(0);
+    animation: floaty 14s ease-in-out infinite;
+}
+
+.theme-wedding .bubbles::after {
+    opacity: .55;
+    animation-duration: 19s;
+    animation-direction: reverse;
+}
+
+@keyframes floaty {
+
+    0%,
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
+
+    50% {
+        transform: translate3d(0, -16px, 0);
+    }
+}
+
+.theme-wedding .card {
+    width: 100%;
+    border-radius: var(--r);
+    background: var(--card);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, .7);
+    overflow: hidden;
+    position: relative;
+}
+
+.theme-wedding .header {
+    padding: 18px 18px 14px;
+    background: linear-gradient(90deg, rgba(255, 77, 141, .16), rgba(124, 58, 237, .14), rgba(6, 182, 212, .14));
+    border-bottom: 1px solid rgba(255, 255, 255, .75);
+}
+
+.theme-wedding .btn.primary {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 1), rgba(15, 23, 42, .92));
+    color: var(--btn2);
+    box-shadow: 0 16px 30px rgba(2, 6, 23, .22);
+    border-radius: 18px;
+}
+
+.theme-wedding .spark {
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2), var(--accent3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* WALL SPECIFIC STYLES - WEDDING */
+.theme-wedding .wall-container {
+    /* Transparent so body background (bubbles) shows through */
+    background: transparent;
+}
+
+.theme-wedding .photo-frame {
+    background: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    /* Picture frame style */
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.3),
+        0 0 0 10px rgba(255, 255, 255, 0.3);
+    /* Glassy border effect */
+}
+
+.theme-wedding .main-image {
+    border-radius: 2px;
+}
+
+.theme-wedding .uploader-badge {
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--ink);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: var(--font-main);
+}

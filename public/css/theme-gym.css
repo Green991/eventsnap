@@ -1,0 +1,146 @@
+/* Gym / Sports Theme extracted from _LEGACY/sports.html */
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;600;700&display=swap');
+
+:root {
+    /* Dark/Aggressive Theme Palette */
+    --gym-bg-dark: #0a0a0a;
+    --gym-bg-card: rgba(20, 20, 20, 0.95);
+    --gym-neon-blue: #00f3ff;
+    --gym-neon-pink: #ff0055;
+    --gym-text-main: #ffffff;
+    --gym-text-muted: #a3a3a3;
+    --gym-r: 4px;
+    --gym-btn-primary: #ffffff;
+    --gym-btn-primary-text: #000000;
+}
+
+body.theme-gym {
+    font-family: 'Teko', 'Oswald', ui-sans-serif, system-ui, sans-serif;
+    color: var(--gym-text-main);
+    background-color: var(--gym-bg-dark);
+    background-image:
+        linear-gradient(45deg, #111 25%, transparent 25%, transparent 75%, #111 75%, #111),
+        linear-gradient(45deg, #111 25%, transparent 25%, transparent 75%, #111 75%, #111);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Text Overrides for Dark Mode */
+.theme-gym h1,
+.theme-gym h2,
+.theme-gym h3 {
+    color: var(--gym-text-main);
+    text-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+}
+
+.theme-gym p,
+.theme-gym .sub,
+.theme-gym .mini {
+    color: var(--gym-text-muted);
+}
+
+.theme-gym .pill {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--gym-neon-blue);
+    border: 1px solid var(--gym-neon-blue);
+}
+
+.theme-gym .glow-bg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 150vw;
+    height: 150vw;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(0, 243, 255, 0.08) 0%, rgba(255, 0, 85, 0.05) 50%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
+    animation: gym-pulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes gym-pulse {
+    0% {
+        opacity: 0.5;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+.theme-gym .card {
+    border-radius: var(--gym-r);
+    background: var(--gym-bg-card);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 1px rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-gym .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gym-neon-pink), var(--gym-neon-blue));
+    z-index: 10;
+}
+
+.theme-gym .btn {
+    border-radius: 0;
+    text-transform: uppercase;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    font-size: 1.2rem;
+    font-weight: 900;
+}
+
+.theme-gym .btn.primary {
+    background: var(--gym-btn-primary);
+    color: var(--gym-btn-primary-text);
+}
+
+.theme-gym .btn.primary:hover {
+    background: var(--gym-neon-blue);
+    box-shadow: 0 0 20px var(--gym-neon-blue);
+}
+
+.theme-gym .spark {
+    color: var(--gym-neon-blue);
+    font-weight: bold;
+}
+
+/* WALL SPECIFIC STYLES - GYM */
+.theme-gym .wall-container {
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+}
+
+.theme-gym .photo-frame {
+    background: #000;
+    border: 2px solid var(--gym-neon-blue);
+    box-shadow:
+        0 0 20px rgba(0, 243, 255, 0.4),
+        inset 0 0 20px rgba(0, 243, 255, 0.2);
+    border-radius: 10px;
+}
+
+.theme-gym .main-image {
+    /* Increase contrast for dramatic effect */
+    filter: contrast(1.1);
+    border-radius: 8px;
+}
+
+.theme-gym .uploader-badge {
+    background: black;
+    color: var(--gym-neon-blue);
+    border: 1px solid var(--gym-neon-pink);
+    text-transform: uppercase;
+    font-family: 'Teko', sans-serif;
+    letter-spacing: 2px;
+}

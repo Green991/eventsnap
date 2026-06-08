@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Cámara - EventSnap</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="./css/main.css">
+    <!-- Theme CSS will be injected here by app.js -->
+    <style>
+        /* Specific overrides for the camera app if needed */
+        .previewWrap img,
+        .previewWrap video {
+            width: 100%;
+            display: block;
+            max-height: 56vh;
+            object-fit: cover;
+        }
+    </style>
+</head>
+
+<body> <!-- Body class will be set by app.js (e.g., 'bubbles') -->
+
+    <div class="wrap">
+        <div class="card">
+            <div class="header">
+                <div class="pill">✨ Equipo <span id="couplePill">EventSnap</span> <span style="opacity:.85">|</span> 📸
+                </div>
+                <h1 id="mainTitle">¡Caza un momentazo y súbelo!</h1>
+                <p class="sub" id="subtitle">
+                    Risas, bailes épicos, brindis, abrazos... <b>TODO VALE</b> 😄<br>
+                    Se guardará en un álbum privado para que <b><span id="coupleName">—</span></b> lo disfruten después
+                    ❤️
+                </p>
+            </div>
+
+            <div class="content">
+
+                <!-- LOADING STATE -->
+                <div id="loadingBlock">
+                    <button class="btn secondary disabled" disabled>
+                        <span class="icon">⏳</span> Cargando evento…
+                    </button>
+                </div>
+
+                <!-- INVALID STATE -->
+                <div id="invalidBlock" class="hidden">
+                    <button class="btn secondary disabled" disabled style="border-color:rgba(239,68,68,.35);">
+                        <span class="icon">⛔</span> Enlace no válido
+                    </button>
+                    <div class="status">
+                        <span class="statusPill bad" id="invalidMsg">No encontramos este evento.</span>
+                    </div>
+                </div>
+
+                <!-- VALID STATE -->
+                <div id="validBlock" class="hidden">
+                    <div class="grid">
+                        <div style="margin-bottom:6px">
+                            <input type="text" id="uploaderName" placeholder="Tu nombre (opcional)" class="inputName"
+                                style="width:100%; padding:14px; border-radius:14px; border:1px solid rgba(15,23,42,.15);" />
+                        </div>
+
+                        <button class="btn btn-primary" id="takeBtn"
+                            style="width:100%; padding:16px; font-size:18px;"><span class="icon">📸</span> Hacer
+                            foto</button>
+                        <button class="btn secondary" id="videoBtn"
+                            style="width:100%; padding:16px; font-size:18px; margin-top: 10px;"
+                            type="button"><span class="icon">🎥</span> Grabar vídeo (máx 6s)</button>
+                        <button class="btn secondary" id="startRecordBtn"
+                            style="width:100%; padding:16px; font-size:18px; margin-top: 10px;"
+                            type="button" disabled><span class="icon">🔴</span> Empezar grabación</button>
+                        <button class="btn secondary" id="switchCameraBtn"
+                            style="width:100%; padding:16px; font-size:18px; margin-top: 10px;"
+                            type="button" disabled><span class="icon">🔄</span> Cambiar cámara</button>
+
+                        <!-- Inputs ocultos -->
+                        <input class="hidden" id="cameraInput" type="file" accept="image/*"
+                            capture="environment" />
+
+                        <div id="previewWrap" class="previewWrap hidden"
+                            style="margin-top:12px; border-radius:18px; overflow:hidden; border:1px solid rgba(15,23,42,.10);">
+                            <img id="preview" alt="Previsualización" />
+                            <video id="previewVideo" class="hidden" playsinline muted controls></video>
+                        </div>
+
+                        <div id="postCaptureActions" class="hidden" style="margin-top:12px; display:flex; gap:10px;">
+                            <button class="btn secondary" id="retakeBtn" type="button"
+                                style="flex:1; padding:14px; font-size:16px;"><span class="icon">↩️</span> Repetir
+                                captura</button>
+                        </div>
+
+                        <!-- Upload Progress -->
+                        <div id="progressContainer" class="hidden" style="margin-top:12px;">
+                            <div style="background:#e2e8f0; height:10px; border-radius:5px; overflow:hidden;">
+                                <div id="progressBar"
+                                    style="width:0%; height:100%; background:#0f172a; transition:width 0.2s;"></div>
+                            </div>
+                            <p id="progressText" class="text-center text-sm" style="margin-top:5px;">Subiendo... 0%</p>
+                        </div>
+
+                        <button class="btn btn-primary hidden" id="sendBtn"
+                            style="width:100%; padding:16px; font-size:18px; margin-top:12px;"><span
+                                class="icon">🚀</span> Enviar</button>
+                    </div>
+
+                    <div class="status" id="status" role="status" aria-live="polite"
+                        style="margin-top:12px; min-height:22px; text-align:center;"></div>
+
+                    <div class="small text-center" style="margin-top:12px; font-size:12px; opacity:0.8;">
+                        <span class="spark">Gracias por aportar magia</span> 🥳
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="footer">
+                <div class="mini">Hecho con ❤️ para <span id="footerCouple">EventSnap</span></div>
+                <div class="mini" style="opacity:.9">📷 + 🎉 = ✅</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Optional runtime config for hybrid media mode (Firebase + Cloudflare R2)
+        // Default endpoint for signed uploads (local + production).
+        window.__EVENTSNAP_R2_SIGN_UPLOAD_ENDPOINT__ =
+            window.__EVENTSNAP_R2_SIGN_UPLOAD_ENDPOINT__ ||
+            'https://eventsnapr2.eventsnap-contacto.workers.dev/sign-upload';
+    </script>
+    <script type="module" src="./js/firebase-config.js"></script>
+    <script type="module" src="./js/app.js"></script>
+</body>
+
+</html>

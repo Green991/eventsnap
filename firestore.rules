@@ -1,0 +1,95 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 1. Invitation Codes
+    // Solo usuarios autenticados (Google Auth) pueden leer códigos para validarlos.
+    match /invitation_codes/{codeId} {
+      allow read: if request.auth != null;
+    }
+
+    // 2. Users
+    match /users/{userId} {
+      // El dueño puede leer y escribir todo.
+      // allow create: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null; // DEBUG: Relaxed rule to fix registration issue
+      
+      // Permitimos leer a todo el mundo (necesario para que app.js lea el límite de cuota del dueño).
+      // NOTA: Esto expone el email del anfitrión. En producción idealmente se separaría en otro doc.
+      allow read: if true; 
+      
+      // El dueño puede actualizar todo.
+      allow update: if request.auth != null && request.auth.uid == userId;
+      
+      // Permitimos a "invitados" (sin login) actualizar SOLO el campo storage_used
+      // con límites para evitar abuso/costes inesperados.
+      allow update: if
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['storage_used']) &&
+        request.resource.data.storage_used is number &&
+        request.resource.data.storage_used >= 0 &&
+        resource.data.storage_used is number &&
+        request.resource.data.storage_used <= resource.data.storage_used + 25;
+    }
+
+    // 3. Events
+    match /events/{eventId} {
+      // Público puede leer (para cargar /app.html con el slug).
+      allow read: if true;
+      
+      // Solo usuarios registrados pueden crear eventos.
+      allow create: if request.auth != null;
+      
+      // Solo el dueño puede editar el evento.
+      allow update: if request.auth != null && resource.data.owner_uid == request.auth.uid;
+
+      // SUB-COLECCIÓN: FOTOS
+      // Permitimos a cualquiera (invitados) crear documentos de fotos.
+      // Soporta fotos y vídeos cortos.
+      match /photos/{photoId} {
+        allow read: if true;
+        allow create: if
+          request.resource.data.url is string &&
+          (
+            !('mediaUrl' in request.resource.data) ||
+            request.resource.data.mediaUrl is string
+          ) &&
+          request.resource.data.uploader is string &&
+          request.resource.data.createdAt != null &&
+          (
+            !('expiresAt' in request.resource.data) ||
+            request.resource.data.expiresAt is timestamp
+          ) &&
+          (
+            !('retentionDays' in request.resource.data) ||
+            (
+              request.resource.data.retentionDays is int &&
+              request.resource.data.retentionDays >= 1 &&
+              request.resource.data.retentionDays <= 30
+            )
+          ) &&
+          request.resource.data.path is string &&
+          (
+            !('mediaProvider' in request.resource.data) ||
+            request.resource.data.mediaProvider in ['firebase', 'r2']
+          ) &&
+          request.resource.data.sizeMB is number &&
+          request.resource.data.sizeMB >= 0 &&
+          request.resource.data.sizeMB <= 25 &&
+          request.resource.data.type in ['image', 'video'] &&
+          (
+            !('hasAudio' in request.resource.data) ||
+            request.resource.data.hasAudio is bool
+          ) &&
+          (
+            request.resource.data.type == 'image' ||
+            (
+              request.resource.data.durationSec is number &&
+              request.resource.data.durationSec >= 0 &&
+              request.resource.data.durationSec <= 6.1
+            )
+          );
+        allow delete: if request.auth != null; // Permitir borrar al dueño (o cualquier usuario auth por ahora)
+      }
+    }
+  }
+}

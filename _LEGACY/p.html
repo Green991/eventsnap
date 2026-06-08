@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirigiendo...</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .code-display {
+            font-family: monospace;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎬</h1>
+        <div id="content">
+            <p>Cargando proyector...</p>
+            <div class="spinner"></div>
+        </div>
+    </div>
+
+    <script>
+        // 🔧 CONFIGURATION
+        const DEFAULT_WORKER_URL = "https://eventsnap-proxy.eventsnap-contacto.workers.dev/";
+        const FALLBACK_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyYExmMz9ioyze6YWbJ-HThZ_QztsLpTF3VVD0INHIlKQs4k4A7nnZeD0FwYBZmtD_d/exec";
+
+        const params = new URLSearchParams(window.location.search);
+        const codigo = params.get('c');
+
+        // Functions
+        function showError(title, msg, smallMsg = "") {
+            document.getElementById('content').innerHTML = `
+                <div class="error">
+                    <p style="font-size:24px; margin-bottom:10px;">${title}</p>
+                    <p>${msg}</p>
+                    ${smallMsg ? `<p style="margin-top:10px; font-size:14px; opacity:0.7;">${smallMsg}</p>` : ''}
+                </div>
+            `;
+        }
+
+        async function resolveCode() {
+            // 1. Validate input
+            if (!codigo) {
+                return showError("❌ Error", "No se proporcionó ningún código.", "Formato correcto: /p?c=ABC123");
+            }
+
+            // 2. Show loading state
+            document.getElementById('content').innerHTML = `
+                <p>Código:</p>
+                <div class="code-display">${codigo}</div>
+                <div class="spinner"></div>
+                <p style="margin-top:20px; opacity:0.8;">Cargando configuración...</p>
+            `;
+
+            // 3. Determine API URL
+            // Priority: LocalStorage (Admin dev override) -> Hardcoded Fallback (Latest deployment)
+            let apiUrl = localStorage.getItem('es_projector_url') || FALLBACK_SCRIPT_URL;
+            let method = 'GET';
+            let body = null;
+
+            // If we are using the fallback (or any script url) and want to avoid CORS issues 
+            // in some browsers, we can use the Worker as a proxy.
+            // But let's try direct first for speed, or fallback to Worker if fetch fails.
+
+            // To make it robust: try to resolve via script URL directly (JSONP-like or CORS if enabled)
+            // or simply use the Worker with the correct SCRIPT_URL inside it.
+
+            apiUrl += `?action=resolveShortCode&codigo=${codigo}`;
+
+            try {
+                // 4. Fetch Data
+                const options = {
+                    method: method,
+                    headers: method === 'POST' ? { 'Content-Type': 'application/json' } : undefined,
+                    body: body
+                };
+
+                const res = await fetch(apiUrl, options);
+                const data = await res.json();
+
+                if (data.success && data.ok) {
+                    // 5. Redirect on Success
+                    const baseUrl = window.location.origin + '/proyector/Index.html';
+                    const url = new URL(baseUrl);
+                    url.searchParams.set('folderId', data.folderId);
+                    url.searchParams.set('scriptUrl', data.scriptUrl);
+
+                    // Add extra debug info if needed
+                    console.log("Redirecting to:", url.toString());
+                    window.location.href = url.toString();
+                } else {
+                    // Show logical error
+                    showError("❌ Código Inválido", data.error || 'El código no existe o ha sido desactivado.', codigo);
+                }
+
+            } catch (err) {
+                console.error(err);
+                showError("⚠️ Error de Conexión", "No se pudo conectar con el servidor.", err.message);
+            }
+        }
+
+        // Start
+        resolveCode();
+    </script>
+</body>
+
+</html>

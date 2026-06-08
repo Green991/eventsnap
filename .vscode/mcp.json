@@ -1,0 +1,16 @@
+{
+  "servers": {
+    "brainsync": {
+      "command": "node",
+      "args": [
+        "c:\\Users\\34645\\.vscode\\extensions\\dawoodahmad.brainsync-3.0.5\\dist\\mcp-server.js",
+        "--db",
+        "C:\\Users\\34645\\.brainsync\\eventsnap-dev-28f33cb3\\state.dat"
+      ],
+      "type": "stdio",
+      "env": {
+        "BRAINSYNC_ENV_FILE": "C:\\Users\\34645\\.brainsync\\eventsnap-dev-28f33cb3\\mcp-secret-env.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,378 @@
+/* Dashboard Pastel-Neon Draft Theme */
+:root {
+  --dash-bg1: #fff1f7;
+  --dash-bg2: #f2efff;
+  --dash-bg3: #e9fbff;
+  --dash-ink: #0f172a;
+  --dash-muted: #475569;
+  --dash-card: rgba(255, 255, 255, 0.86);
+  --dash-border: rgba(255, 255, 255, 0.72);
+  --dash-shadow: 0 18px 45px rgba(15, 23, 42, 0.12);
+  --dash-accent-pink: #ff4d8d;
+  --dash-accent-violet: #7c3aed;
+  --dash-accent-cyan: #06b6d4;
+  --dash-dark-btn: #0f172a;
+}
+
+body.dashboard-page {
+  color: var(--dash-ink);
+  background:
+    radial-gradient(1200px 700px at 10% 0%, var(--dash-bg1), transparent 55%),
+    radial-gradient(1000px 700px at 90% 10%, var(--dash-bg2), transparent 60%),
+    radial-gradient(900px 700px at 50% 100%, var(--dash-bg3), transparent 55%),
+    linear-gradient(180deg, #ffffff, #f8fafc);
+  min-height: 100vh;
+}
+
+body.dashboard-page::before,
+body.dashboard-page::after {
+  content: "";
+  position: fixed;
+  inset: -80px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: .75;
+  background:
+    radial-gradient(circle at 12% 22%, rgba(255, 77, 141, .16) 0 11px, transparent 12px),
+    radial-gradient(circle at 28% 74%, rgba(124, 58, 237, .14) 0 13px, transparent 14px),
+    radial-gradient(circle at 82% 20%, rgba(6, 182, 212, .14) 0 12px, transparent 13px),
+    radial-gradient(circle at 86% 72%, rgba(255, 77, 141, .12) 0 9px, transparent 10px);
+  animation: dashboardFloat 16s ease-in-out infinite;
+}
+
+body.dashboard-page::after {
+  opacity: .45;
+  animation-duration: 22s;
+  animation-direction: reverse;
+}
+
+@keyframes dashboardFloat {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  50% {
+    transform: translate3d(0, -14px, 0);
+  }
+}
+
+.dashboard-container {
+  position: relative;
+  z-index: 1;
+}
+
+.top-bar {
+  background: linear-gradient(90deg, rgba(255, 255, 255, .84), rgba(255, 255, 255, .74));
+  border: 1px solid var(--dash-border);
+  border-radius: 18px;
+  backdrop-filter: blur(14px);
+  box-shadow: var(--dash-shadow);
+}
+
+.top-bar h2 {
+  color: var(--dash-ink);
+}
+
+#userEmail {
+  background: linear-gradient(90deg, var(--dash-accent-pink), var(--dash-accent-violet), var(--dash-accent-cyan));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.card {
+  background: var(--dash-card);
+  border: 1px solid var(--dash-border);
+  box-shadow: var(--dash-shadow);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--dash-accent-pink), var(--dash-accent-violet), var(--dash-accent-cyan));
+  opacity: .85;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 40px rgba(15, 23, 42, 0.14);
+}
+
+.btn {
+  border-radius: 14px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 65%, #334155 100%);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.22);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 18px 32px rgba(15, 23, 42, 0.28), 0 0 0 4px rgba(124, 58, 237, 0.12);
+}
+
+#logoutBtn,
+#downloadAllBtn,
+#createNewEventBtn {
+  border-radius: 12px !important;
+  border: 1px solid rgba(124, 58, 237, 0.18) !important;
+  background: rgba(255, 255, 255, .86) !important;
+  color: var(--dash-ink) !important;
+}
+
+#createNewEventBtn {
+  background: linear-gradient(120deg, rgba(16, 185, 129, .14), rgba(6, 182, 212, .14)) !important;
+}
+
+#eventSelector,
+.input-field,
+.inputName {
+  background: rgba(255, 255, 255, .88);
+  border-color: rgba(124, 58, 237, 0.18);
+}
+
+#eventSelector:focus,
+.input-field:focus,
+.inputName:focus {
+  border-color: rgba(124, 58, 237, 0.55) !important;
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.11);
+}
+
+#displayEventLink {
+  color: #0ea5e9 !important;
+}
+
+#displayWallLink {
+  color: #8b5cf6 !important;
+}
+
+.quick-btn {
+  background: linear-gradient(120deg, rgba(255, 77, 141, .14), rgba(124, 58, 237, .12), rgba(6, 182, 212, .14));
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  color: #312e81;
+}
+
+.quick-btn:hover {
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.12);
+}
+
+.storage-container {
+  background: rgba(255, 255, 255, .72);
+  border: 1px solid rgba(124, 58, 237, 0.14);
+}
+
+.storage-bar {
+  background: linear-gradient(90deg, var(--dash-accent-pink), var(--dash-accent-violet), var(--dash-accent-cyan));
+}
+
+.photo-card {
+  border: 1px solid rgba(255, 255, 255, .78);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+}
+
+.photo-card:hover {
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.16), 0 0 0 3px rgba(6, 182, 212, 0.15);
+}
+
+.empty-state,
+#emptyGalleryMsg {
+  color: var(--dash-muted);
+}
+
+.toast {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+}
+
+.toast.error {
+  background: linear-gradient(135deg, #b91c1c, #dc2626);
+  border-color: rgba(254, 202, 202, .4);
+}
+
+.create-event-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  align-items: stretch;
+}
+
+.create-event-actions .btn {
+  width: auto;
+}
+
+.create-event-actions .btn-primary {
+  flex: 1;
+}
+
+.create-cancel-btn {
+  background: rgba(255, 255, 255, .85);
+  color: #334155;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  min-width: 130px;
+}
+
+.create-cancel-btn:hover {
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
+  transform: translateY(-1px);
+}
+
+#emptyDashboardState {
+  text-align: center;
+}
+
+#emptyDashboardState p {
+  color: var(--dash-muted);
+}
+
+/* New Event - Full Page Live Theme Preview */
+body.create-preview-wedding.dashboard-page {
+  background:
+    radial-gradient(1200px 700px at 8% 0%, #fff1f7, transparent 55%),
+    radial-gradient(1000px 700px at 92% 8%, #f2efff, transparent 60%),
+    radial-gradient(900px 700px at 50% 100%, #e9fbff, transparent 55%),
+    linear-gradient(180deg, #ffffff, #f8fafc);
+}
+
+body.create-preview-wedding.dashboard-page::before,
+body.create-preview-wedding.dashboard-page::after {
+  opacity: .85;
+}
+
+body.create-preview-wedding #createEventSection .card {
+  border-color: rgba(255, 255, 255, .82);
+  box-shadow: 0 20px 46px rgba(15, 23, 42, 0.14);
+}
+
+body.create-preview-wedding #createEventSection .card::before {
+  background: linear-gradient(90deg, #ff4d8d, #7c3aed, #06b6d4);
+}
+
+body.create-preview-wedding #createEventSection h2 {
+  background: linear-gradient(90deg, #ff4d8d, #7c3aed, #06b6d4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+body.create-preview-wedding #createEventSection .theme-option.selected {
+  border-color: #7c3aed;
+  background: linear-gradient(120deg, rgba(255, 77, 141, .14), rgba(124, 58, 237, .12), rgba(6, 182, 212, .14));
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, .1);
+}
+
+body.create-preview-gym.dashboard-page {
+  background-color: #090b11;
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(255, 0, 85, 0.16), transparent 45%),
+    radial-gradient(circle at 90% 8%, rgba(0, 243, 255, 0.16), transparent 45%),
+    linear-gradient(135deg, #0a0a0a 0%, #0c1220 55%, #0f172a 100%);
+}
+
+body.create-preview-gym.dashboard-page::before,
+body.create-preview-gym.dashboard-page::after {
+  opacity: .28;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(255, 0, 85, .28) 0 10px, transparent 11px),
+    radial-gradient(circle at 78% 28%, rgba(0, 243, 255, .3) 0 11px, transparent 12px);
+}
+
+body.create-preview-gym .top-bar {
+  background: rgba(13, 18, 32, .8);
+  border-color: rgba(0, 243, 255, 0.24);
+  box-shadow: 0 0 24px rgba(0, 243, 255, .12);
+}
+
+body.create-preview-gym .top-bar h2,
+body.create-preview-gym #logoutBtn,
+body.create-preview-gym #createNewEventBtn,
+body.create-preview-gym #eventSelector {
+  color: #e5f9ff !important;
+}
+
+body.create-preview-gym #logoutBtn,
+body.create-preview-gym #createNewEventBtn,
+body.create-preview-gym #eventSelector {
+  background: rgba(15, 23, 42, .78) !important;
+  border-color: rgba(0, 243, 255, 0.3) !important;
+}
+
+body.create-preview-gym #createEventSection .card {
+  background: rgba(15, 23, 42, 0.82);
+  border-color: rgba(0, 243, 255, 0.25);
+  box-shadow: 0 0 34px rgba(0, 243, 255, 0.14), 0 18px 45px rgba(2, 6, 23, .45);
+}
+
+body.create-preview-gym #createEventSection .card::before {
+  background: linear-gradient(90deg, #ff0055, #00f3ff);
+}
+
+body.create-preview-gym #createEventSection h2,
+body.create-preview-gym #createEventSection .form-label {
+  color: #f8fafc;
+}
+
+body.create-preview-gym #createEventSection p,
+body.create-preview-gym #createEventSection span,
+body.create-preview-gym #createEventSection .input-field,
+body.create-preview-gym #createEventSection .create-cancel-btn {
+  color: #cbd5e1;
+}
+
+body.create-preview-gym #createEventSection .input-field {
+  background: rgba(15, 23, 42, .8);
+  border-color: rgba(0, 243, 255, 0.28);
+}
+
+body.create-preview-gym #createEventSection .input-field:focus {
+  border-color: rgba(0, 243, 255, 0.62);
+  box-shadow: 0 0 0 4px rgba(0, 243, 255, 0.16);
+}
+
+body.create-preview-gym #createEventSection .btn-primary {
+  background: linear-gradient(135deg, #f8fafc, #dbeafe);
+  color: #0f172a;
+  box-shadow: 0 0 24px rgba(0, 243, 255, 0.24);
+}
+
+body.create-preview-gym #createEventSection .create-cancel-btn {
+  background: rgba(15, 23, 42, .84);
+  border-color: rgba(255, 0, 85, 0.28);
+}
+
+body.create-preview-gym #createEventSection .theme-option {
+  background: rgba(15, 23, 42, .76);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+body.create-preview-gym #createEventSection .theme-option.selected {
+  border-color: #00f3ff;
+  box-shadow: 0 0 0 4px rgba(0, 243, 255, .14);
+  background: linear-gradient(135deg, rgba(255, 0, 85, .13), rgba(0, 243, 255, .14));
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    border-radius: 14px;
+  }
+
+  .card {
+    border-radius: 18px;
+  }
+
+  .create-event-actions {
+    flex-direction: column;
+  }
+
+  .create-event-actions .btn,
+  .create-cancel-btn {
+    width: 100%;
+  }
+}
