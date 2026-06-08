@@ -1,4 +1,4 @@
-import { auth, db } from './firebase-config.js';
+﻿import { auth, db } from './firebase-config.js';
 import { buildAppUrl, buildWallUrl } from './event-loader.js';
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 import { doc, getDoc, updateDoc, setDoc, serverTimestamp, collection, query, where, getDocs, orderBy, onSnapshot, deleteDoc, increment } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
@@ -21,6 +21,14 @@ const createThemeRadios = document.querySelectorAll('input[name="eventTheme"]');
 const eventSelector = document.getElementById('eventSelector');
 const createNewEventBtn = document.getElementById('createNewEventBtn');
 
+
+
+// Mobile / New UI additions
+const dashUserName = document.getElementById('dashUserName');
+const userEmailMobile = document.getElementById('userEmailMobile');
+const eventSelectorMobile = document.getElementById('eventSelectorMobile');
+const createNewEventBtnMobile = document.getElementById('createNewEventBtnMobile');
+const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
 
 // Dashboard Elements
 const displayEventName = document.getElementById('displayEventName');
@@ -373,7 +381,7 @@ downloadAllBtn.addEventListener('click', async () => {
             // Fetch media blob
             const mediaUrl = resolveMediaUrl(photo);
             const response = await fetch(mediaUrl);
-            if (!response.ok) throw new Error(`Falló descarga de ${mediaUrl}`);
+            if (!response.ok) throw new Error(`FallÃ³ descarga de ${mediaUrl}`);
 
             const blob = await response.blob();
 
@@ -410,11 +418,11 @@ downloadAllBtn.addEventListener('click', async () => {
 function createPhotoCard(photoId, photo, eventId) {
     const div = document.createElement('div');
     div.className = 'photo-card';
-    const uploader = photo.uploader || 'Anónimo';
+    const uploader = photo.uploader || 'AnÃ³nimo';
     const mediaType = photo.type || 'image';
     const hasAudio = mediaType === 'video' ? Boolean(photo.hasAudio) : null;
     const mediaLabel = mediaType === 'video'
-        ? (hasAudio ? 'Vídeo · con audio' : 'Vídeo · sin audio')
+        ? (hasAudio ? 'VÃ­deo Â· con audio' : 'VÃ­deo Â· sin audio')
         : 'Foto';
     const mediaUrl = resolveMediaUrl(photo);
     const mediaMarkup = mediaType === 'video'
@@ -426,7 +434,7 @@ function createPhotoCard(photoId, photo, eventId) {
         <span class="media-badge">${mediaLabel}</span>
         <div class="photo-info">
             <span>${uploader}</span>
-            <button class="delete-btn" title="Eliminar archivo">🗑️</button>
+            <button class="delete-btn" title="Eliminar archivo">ðŸ—‘ï¸</button>
         </div>
     `;
 
@@ -444,7 +452,7 @@ function createPhotoCard(photoId, photo, eventId) {
 }
 
 async function deletePhoto(photoId, photo, eventId) {
-    if (!confirm("¿Seguro que quieres borrar este archivo?")) return;
+    if (!confirm("Â¿Seguro que quieres borrar este archivo?")) return;
 
     try {
         const mediaProvider = String(photo.mediaProvider || 'firebase').toLowerCase();
@@ -460,7 +468,7 @@ async function deletePhoto(photoId, photo, eventId) {
                 await deleteObject(storageRef);
             } catch (storageError) {
                 if (storageError.code === 'storage/object-not-found') {
-                    console.warn("La foto no existía en Storage.");
+                    console.warn("La foto no existÃ­a en Storage.");
                 } else {
                     throw storageError;
                 }
@@ -543,10 +551,10 @@ saveWallDurationBtn?.addEventListener('click', async () => {
         });
 
         syncWallDurationUI(sanitized);
-        showToast(`Duración del wall guardada: ${sanitized}s`);
+        showToast(`DuraciÃ³n del wall guardada: ${sanitized}s`);
     } catch (error) {
         console.error('Error updating wall duration:', error);
-        showToast('No se pudo guardar la duración del wall', true);
+        showToast('No se pudo guardar la duraciÃ³n del wall', true);
     } finally {
         saveWallDurationBtn.disabled = false;
         saveWallDurationBtn.textContent = originalText;
@@ -617,7 +625,7 @@ function renderLightboxItem() {
     lightboxCurrentMediaId = media.id;
 
     const mediaType = media.type || 'image';
-    const uploader = media.uploader || 'Anónimo';
+    const uploader = media.uploader || 'AnÃ³nimo';
 
     if (mediaType === 'video') {
         const video = document.createElement('video');
@@ -638,11 +646,11 @@ function renderLightboxItem() {
 
     const hasAudio = mediaType === 'video' ? Boolean(media.hasAudio) : null;
     const mediaLabel = mediaType === 'video'
-        ? (hasAudio ? 'Vídeo con audio' : 'Vídeo sin audio')
+        ? (hasAudio ? 'VÃ­deo con audio' : 'VÃ­deo sin audio')
         : 'Foto';
 
     if (lightboxMediaLabel) {
-        lightboxMediaLabel.textContent = `${mediaLabel} · ${uploader}`;
+        lightboxMediaLabel.textContent = `${mediaLabel} Â· ${uploader}`;
     }
 
     if (lightboxPosition) {
@@ -758,19 +766,19 @@ createEventForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const name = document.getElementById('eventName').value.trim();
-    // Improved slug: NFD normalize to split accents/ñ, remove diacritics, then keep only az09
+    // Improved slug: NFD normalize to split accents/Ã±, remove diacritics, then keep only az09
     const rawSlug = document.getElementById('eventSlug').value.trim().toLowerCase();
     const slug = rawSlug
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "") // Remove accents
-        .replace(/ñ/g, "n") // Explicit ñ check just in case NFD doesn't catch it on some browsers? NFD usually separates n and ~, but explicit replace is safer for 'ñ' sometimes if not separated. actually NFD splits ñ into n + ~, so the regex removes ~. Perfect.
+        .replace(/Ã±/g, "n") // Explicit Ã± check just in case NFD doesn't catch it on some browsers? NFD usually separates n and ~, but explicit replace is safer for 'Ã±' sometimes if not separated. actually NFD splits Ã± into n + ~, so the regex removes ~. Perfect.
         .replace(/[^a-z0-9-]/g, '-')
         .replace(/-+/g, '-')
         .replace(/^-|-$/g, '');
     const theme = document.querySelector('input[name="eventTheme"]:checked').value;
 
     if (!name || !slug) {
-        alert("Por favor rellena el nombre y un identificador válido (letras, números y guiones).");
+        alert("Por favor rellena el nombre y un identificador vÃ¡lido (letras, nÃºmeros y guiones).");
         return;
     }
 
@@ -785,9 +793,9 @@ createEventForm.addEventListener('submit', async (e) => {
         const checkSnap = await getDocs(qCheck);
 
         if (!checkSnap.empty) {
-            alert(`El identificador "${slug}" ya está en uso. Por favor elige otro.`);
+            alert(`El identificador "${slug}" ya estÃ¡ en uso. Por favor elige otro.`);
             submitBtn.disabled = false;
-            submitBtn.textContent = "Crear Evento ✨";
+            submitBtn.textContent = "Crear Evento âœ¨";
             return;
         }
 
@@ -836,7 +844,7 @@ createEventForm.addEventListener('submit', async (e) => {
         alert("Error al crear el evento: " + error.message);
     } finally {
         submitBtn.disabled = false;
-        submitBtn.textContent = "Crear Evento ✨";
+        submitBtn.textContent = "Crear Evento âœ¨";
     }
 });
 
@@ -915,4 +923,46 @@ function showToast(message, isError = false) {
     toastTimeout = setTimeout(() => {
         toast.classList.add('hidden');
     }, 2600);
+}
+
+
+// Mobile UI sync
+// Sync user name across all displays
+if (userEmailSpan && (dashUserName || userEmailMobile)) {
+    const syncUserName = () => {
+        const name = userEmailSpan.textContent;
+        if (dashUserName) dashUserName.textContent = name;
+        if (userEmailMobile) userEmailMobile.textContent = name;
+    };
+    syncUserName();
+    const observer = new MutationObserver(syncUserName);
+    observer.observe(userEmailSpan, { childList: true, characterData: true, subtree: true });
+}
+
+// Event selector mobile sync
+if (eventSelector && eventSelectorMobile) {
+    eventSelector.addEventListener('change', () => {
+        eventSelectorMobile.value = eventSelector.value;
+    });
+    eventSelectorMobile.addEventListener('change', () => {
+        eventSelector.value = eventSelectorMobile.value;
+        const ev = new Event('change');
+        eventSelector.dispatchEvent(ev);
+    });
+}
+
+// Create new event mobile btn sync
+if (createNewEventBtnMobile && createNewEventBtn) {
+    const syncMobileBtn = () => {
+        createNewEventBtnMobile.classList.toggle('hidden', createNewEventBtn.classList.contains('hidden'));
+    };
+    const mbObserver = new MutationObserver(syncMobileBtn);
+    mbObserver.observe(createNewEventBtn, { attributes: true, attributeFilter: ['class'] });
+    syncMobileBtn();
+    createNewEventBtnMobile.addEventListener('click', () => createNewEventBtn.click());
+}
+
+// Mobile logout
+if (mobileLogoutBtn && logoutBtn) {
+    mobileLogoutBtn.addEventListener('click', () => logoutBtn.click());
 }
