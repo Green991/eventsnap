@@ -1,8 +1,0 @@
-# Reescritura para que /e/<key> cargue index.html (SPA)
-/e/*   /index.html   200
-
-# Reescritura para que /s/<key> cargue sports.html (Versión deportiva)
-/s/*   /sports.html  200
-
-# (Opcional) cualquier otra ruta también
-/*     /index.html   200
