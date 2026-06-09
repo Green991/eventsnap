@@ -125,63 +125,32 @@ body { background-color: #FAFAFD; }
 }
 </style>
 </head>
-<body class="font-body-md text-on-surface antialiased min-h-screen flex">
+<body class="font-body-md text-on-surface antialiased min-h-screen">
 
-<!-- SIDEBAR -->
-<nav class="hidden md:flex bg-surface-container-low w-64 h-screen fixed left-0 top-0 border-r border-outline-variant shadow-sm flex-col p-spacing-gutter z-50">
-    <div class="mb-12">
-        <h1 class="font-display-lg text-primary text-2xl tracking-tight">EventSnap</h1>
-        <p class="font-body-md text-label-md text-on-surface-variant mt-1">Gesti&oacute;n Premium</p>
+<!-- TOP HEADER -->
+<header class="flex items-center justify-between bg-surface/80 backdrop-blur-md fixed top-0 left-0 right-0 z-40 shadow-sm px-5 md:px-margin-desktop py-3 border-b border-outline-variant/20">
+    <div class="flex items-center gap-4">
+        <h1 class="font-display-lg-mobile md:font-display-lg text-primary text-xl tracking-tight">EventSnap</h1>
+        <select id="eventSelector" class="hidden bg-surface-container-low border border-outline-variant rounded-lg px-3 py-1.5 text-xs md:text-sm font-label-md text-on-surface focus:outline-none focus:border-primary"></select>
     </div>
-    <div class="space-y-2 flex-grow">
-        <a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-xl font-semibold" href="#">
-            <span class="material-symbols-outlined" style="font-variation-settings:&quot;FILL&quot; 1;">dashboard</span>
-            <span>Panel de Control</span>
-        </a>
-        <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest rounded-xl" href="#">
-            <span class="material-symbols-outlined">live_tv</span><span>Muro en Directo</span>
-        </a>
-        <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest rounded-xl" href="#">
-            <span class="material-symbols-outlined">photo_library</span><span>Galer&iacute;a</span>
-        </a>
-    </div>
-    <div class="mt-auto space-y-4 pt-8 border-t border-outline-variant/30">
-        <button id="createNewEventBtn" class="hidden w-full bg-primary-container text-on-primary-container hover:scale-[1.02] transition-transform py-3 rounded-xl font-label-md font-medium flex items-center justify-center gap-2">
-            <span class="material-symbols-outlined">add</span> Nuevo Evento
-        </button>
-        <button id="logoutBtn" class="w-full border border-outline text-on-surface hover:bg-surface-container-low transition-colors py-3 rounded-xl font-label-md font-medium flex items-center justify-center gap-2">
-            <span class="material-symbols-outlined">logout</span> Cerrar Sesi&oacute;n
-        </button>
-    </div>
-</nav>
-
-<!-- TOP BAR DESKTOP -->
-<header class="hidden md:flex bg-surface/80 backdrop-blur-md fixed top-0 right-0 w-[calc(100%-16rem)] z-40 shadow-sm justify-between items-center px-margin-desktop py-4 transition-all">
-    <div class="flex items-center gap-8">
-        <nav class="flex gap-6">
-            <a class="text-primary border-b-2 border-primary pb-1 font-label-md" href="#">Resumen</a>
-            <a class="text-on-surface-variant hover:text-primary transition-colors font-label-md pb-1" href="#">Estad&iacute;sticas</a>
-            <a class="text-on-surface-variant hover:text-primary transition-colors font-label-md pb-1" href="#">Participantes</a>
-        </nav>
-    </div>
-    <div class="flex items-center gap-6">
-        <select id="eventSelector" class="hidden bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-sm font-label-md text-on-surface focus:outline-none focus:border-primary"></select>
-        <span id="userEmail" class="font-label-md text-on-surface-variant">Usuario</span>
-    </div>
-</header>
-
-<!-- MOBILE HEADER -->
-<header class="md:hidden fixed top-0 left-0 right-0 bg-surface/90 backdrop-blur-md z-40 px-5 py-4 flex justify-between items-center border-b border-outline-variant/20">
-    <h1 class="font-display-lg-mobile text-primary text-xl">EventSnap</h1>
     <div class="flex items-center gap-3">
-        <select id="eventSelectorMobile" class="hidden bg-surface-container-low border border-outline-variant rounded-lg px-2 py-1.5 text-xs font-label-md text-on-surface focus:outline-none focus:border-primary"></select>
-        <span id="userEmailMobile" class="font-label-sm text-on-surface-variant text-xs"></span>
+        <button id="createNewEventBtn" class="hidden bg-primary-container text-on-primary-container px-4 py-1.5 rounded-full font-label-md text-xs hover:scale-[1.02] transition-transform shadow-sm flex items-center gap-1">
+            <span class="material-symbols-outlined text-[16px]">add</span>
+            <span class="hidden md:inline">Nuevo Evento</span>
+        </button>
+        <span id="userEmail" class="hidden md:block font-label-md text-on-surface-variant">Usuario</span>
+        <span id="userEmailMobile" class="md:hidden font-label-sm text-on-surface-variant text-xs"></span>
+        <button id="logoutBtn" class="text-on-surface-variant hover:text-primary transition-colors p-1.5 rounded-full hover:bg-surface-container-low" title="Cerrar sesion">
+            <span class="material-symbols-outlined">logout</span>
+        </button>
     </div>
 </header>
+
+<!-- MOBILE SELECTOR (hidden, for JS sync) -->
+<select id="eventSelectorMobile" class="hidden"></select>
 
 <!-- MAIN -->
-<main class="flex-1 md:pl-64 pt-20 md:pt-24 px-5 md:px-margin-desktop pb-32 md:pb-12 max-w-[1600px] mx-auto w-full">
-
+<main class="flex-1 pt-14 md:pt-16 px-5 md:px-margin-desktop pb-32 md:pb-12 max-w-[900px] mx-auto w-full">
     <!-- LOADING -->
     <div id="loadingSection" class="text-center py-24">
         <div class="animate-spin w-10 h-10 border-4 border-primary-container border-t-primary rounded-full mx-auto mb-4"></div>
@@ -417,3 +386,4 @@ body { background-color: #FAFAFD; }
 <script type="module" src="js/firebase-config.js"></script>
 <script type="module" src="js/dashboard.js"></script>
 </body></html>
+
